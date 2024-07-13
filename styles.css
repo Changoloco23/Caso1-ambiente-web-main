@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .notes-grid h2 {
+    grid-column: 1 / -1;
+  }
+  
+  #notes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #notes-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  #notes-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  #new-note-btn {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  #new-note-btn:hover {
+    background-color: #3e8e41;
+  }
+  
+  .edit-note {
+    display: none;
+  }
+  
+  .edit-note h2 {
+    margin-top: 0;
+  }
+  
+  #edit-note-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  #edit-note-form label {
+    margin-bottom: 10px;
+  }
+  
+  #edit-note-form input, #edit-note-form textarea {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  #save-btn, #cancel-btn, #delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  #save-btn:hover, #cancel-btn:hover, #delete-btn:hover {
+    background-color: #3e8e41;
+  }
+  
+  #delete-btn {
+    background-color: #ff0000;
+    color: #fff;
+  }
+  
+  #delete-btn:hover {
+    background-color: #cc0000;
+  }
