@@ -1,31 +1,34 @@
 const express = require('express');
 const app = express();
+const notes = [];
 
 app.use(express.json());
 
-// Ruta para crear una nueva nota
-app.post('/api/notas', (req, res) => {
-  const { title, content, tags } = req.body;
-  const note = { title, content, tags };
-  // Agrega la nota a una base de datos o sistema de almacenamiento
-  res.json(note);
+app.get('/notes', (req, res) => {
+    res.json(notes);
 });
 
-// Ruta para obtener todas las notas
-app.get('/api/notas', (req, res) => {
-  const notes = []; // Obtener las notas de la base de datos o sistema de almacenamiento
-  res.json(notes);
+app.post('/notes', (req, res) => {
+    const { title, content } = req.body;
+    const note = { id: notes.length + 1, title, content };
+    notes.push(note);
+    res.json(note);
 });
 
-// Ruta para eliminar una nota
-app.delete('/api/notas/:id', (req, res) => {
-  const id = req.params.id;
-  // Eliminar la nota de la base de datos o sistema de almacenamiento
-  res.json({ message: 'Nota eliminada' });
+app.put('/notes/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const { title, content } = req.body;
+    const index = notes.findIndex((n) => n.id === id);
+    if (index !== -1) {
+        notes[index] = { id, title, content };
+        res.json(notes[index]);
+    } else {
+        res.status(404).json({ error: 'Nota no encontrada' });
+    }
 });
 
-// Iniciar servidor
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Servidor iniciado en el puerto ${port}`);
-});
+app.delete('/notes/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = notes.findIndex((n) => n.id === id);
+    if (index !== -1) {
+        notes.splice(index,

@@ -10,12 +10,18 @@ let notes = [];
 
 // Función para renderizar la lista de notas
 function renderNotes() {
-  notesList.innerHTML = '';
-  notes.forEach((note) => {
-    const noteElement = document.createElement('li');
-    noteElement.textContent = `${note.title} - ${note.tags.join(', ')}`;
-    notesList.appendChild(noteElement);
-  });
+  fetch('/api/notas')
+   .then(response => response.json())
+   .then(data => {
+      notes = data;
+      notesList.innerHTML = '';
+      notes.forEach((note) => {
+        const noteElement = document.createElement('li');
+        noteElement.textContent = `${note.title} - ${note.tags.join(', ')}`;
+        notesList.appendChild(noteElement);
+      });
+    })
+   .catch(error => console.error(error));
 }
 
 // Función para crear una nueva nota
@@ -31,9 +37,18 @@ function createNote() {
     createdAt: new Date(),
     updatedAt: new Date(),
   };
-  notes.push(note);
-  renderNotes();
-  editNoteForm.reset();
+  fetch('/api/notas', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(note),
+  })
+   .then(response => response.json())
+   .then(data => {
+      notes.push(data);
+      renderNotes();
+      editNoteForm.reset();
+    })
+   .catch(error => console.error(error));
 }
 
 // Función para editar una nota
@@ -49,8 +64,15 @@ function editNote(id) {
 
 // Función para eliminar una nota
 function deleteNote(id) {
-  notes = notes.filter((note) => note.id !== id);
-  renderNotes();
+  fetch(`/api/notas/${id}`, {
+    method: 'DELETE',
+  })
+   .then(response => response.json())
+   .then(() => {
+      notes = notes.filter((note) => note.id!== id);
+      renderNotes();
+    })
+   .catch(error => console.error(error));
 }
 
 // Event listeners
@@ -77,7 +99,7 @@ searchInput.addEventListener('input', (e) => {
       note.tags.join(',').toLowerCase().includes(searchTerm)
     );
   });
-  renderNotes(filteredNotes);
+  renderNotes();
 });
 
 // Inicializar la lista de notas
