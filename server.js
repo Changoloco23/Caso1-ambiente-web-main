@@ -31,4 +31,13 @@ app.delete('/notes/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const index = notes.findIndex((n) => n.id === id);
     if (index !== -1) {
-        notes.splice(index,
+        notes.splice(index,1);
+        res.status(204).end();
+    } else {
+        res.status(404).json({ error: 'Nota no encontrada' });
+    }
+});
+
+app.listen(3000, () => {
+    console.log('Servidor en puerto 3000');
+});
